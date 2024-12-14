@@ -11,10 +11,14 @@ figma.ui.onmessage = async(pluginMessage) => {
 
   const postComponentSet = figma.root.findOne(node => node.type === "COMPONENT_SET" && node.name === "post") as ComponentSetNode;
   
-  const variantsMap = { 1: "none", 2: "single", 3: "carousel" };
+  const variantsMap : Record<number, string> = {
+    1: "none",
+    2: "single",
+    3: "carousel"
+  };
+
   const imageVariantName = variantsMap[pluginMessage.imageVariant] || 1;
   const variantName = "Image=" + imageVariantName + ", Dark mode=" + pluginMessage.darkModeState
-  console.log(variantName);
   const selectedVariant = postComponentSet.findOne(node => node.type === "COMPONENT" && node.name === variantName) as ComponentNode;
 
   const newPost = selectedVariant.createInstance();
@@ -31,10 +35,6 @@ figma.ui.onmessage = async(pluginMessage) => {
   templateDescription.characters = pluginMessage.description;
   numLikes.characters = (Math.floor(Math.random() * 1000) +1).toString();
   numComments.characters = (Math.floor(Math.random() * 1000) +1).toString();
-
-  console.log(templateName.characters);
-  console.log(templateUsername.characters);
-  console.log(templateDescription.characters);
 
   nodes.push(newPost);
 
